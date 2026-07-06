@@ -11,7 +11,7 @@ const CONFIG = Object.freeze({
   guildId: '1129103061332263033',
   triggerChannelId: '1129103923135922216',
   outputChannelId: '1481717290561966100',
-  preservedRoleId: '1129103472948678780',
+  preservedRoleIds: ['1129103472948678780', '1129103464530722867'],
   rolesToAdd: ['1343636338754457632', '1343636743450001479'],
   timezone: 'Europe/Madrid',
 });
@@ -67,7 +67,7 @@ async function processMember(message, member) {
   const guild = message.guild;
   await checkBotPermissions(guild);
 
-  const finalRoleIds = [CONFIG.preservedRoleId, ...CONFIG.rolesToAdd];
+  const finalRoleIds = [...CONFIG.preservedRoleIds, ...CONFIG.rolesToAdd];
   await member.roles.set(
     finalRoleIds,
     `Salida de facción solicitada en el mensaje ${message.id}`,
