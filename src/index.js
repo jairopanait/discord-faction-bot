@@ -102,18 +102,26 @@ client.on(Events.MessageCreate, async (message) => {
   if (message.guildId !== CONFIG.guildId) return;
   if (message.channelId !== CONFIG.triggerChannelId) return;
 
-  const mentionedUser = message.mentions.users.first();
-  if (!mentionedUser) return;
+  const mentionedUsers = [...message.mentions.users.values()];
+  if (mentionedUsers.length === 0) return;
 
-  try {
-    const member = await message.guild.members.fetch(mentionedUser.id);
-    await processMember(message, member);
-    await message.react('✅').catch(() => {});
-    console.log(`Procesado ${member.user.tag} (${member.id}) desde el mensaje ${message.id}.`);
-  } catch (error) {
-    console.error(`No se pudo procesar el mensaje ${message.id}:`, error);
-    await message.react('❌').catch(() => {});
+  let failures = 0;
+
+  for (const mentionedUser of mentionedUsers) {
+    try {
+      const member = await message.guild.members.fetch(mentionedUser.id);
+      await processMember(message, member);
+      console.log(`Procesado ${member.user.tag} (${member.id}) desde el mensaje ${message.id}.`);
+    } catch (error) {
+      failures += 1;
+      console.error(
+        `No se pudo procesar a ${mentionedUser.tag} (${mentionedUser.id}) desde el mensaje ${message.id}:`,
+        error,
+      );
+    }
   }
+
+  await message.react(failures === 0 ? '✅' : '❌').catch(() => {});
 });
 
 client.on(Events.Error, (error) => {

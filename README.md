@@ -1,6 +1,6 @@
 # Bot de salidas de facción
 
-Cuando aparece una mención nueva en el canal configurado, el bot procesa al primer usuario mencionado:
+Cuando aparecen menciones nuevas en el canal configurado, el bot procesa a todos los usuarios mencionados:
 
 1. Quita todos sus roles editables, salvo el rol conservado.
 2. Añade los dos roles configurados.
