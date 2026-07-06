@@ -67,18 +67,11 @@ async function processMember(message, member) {
   const guild = message.guild;
   await checkBotPermissions(guild);
 
-  const rolesToRemove = member.roles.cache.filter((role) =>
-    role.id !== guild.id
-    && role.id !== CONFIG.preservedRoleId
-    && !CONFIG.rolesToAdd.includes(role.id)
-    && role.editable
+  const finalRoleIds = [CONFIG.preservedRoleId, ...CONFIG.rolesToAdd];
+  await member.roles.set(
+    finalRoleIds,
+    `Salida de facción solicitada en el mensaje ${message.id}`,
   );
-
-  if (rolesToRemove.size > 0) {
-    await member.roles.remove(rolesToRemove, `Salida de facción solicitada en el mensaje ${message.id}`);
-  }
-
-  await member.roles.add(CONFIG.rolesToAdd, `Salida de facción solicitada en el mensaje ${message.id}`);
   await member.setNickname(null, `Salida de facción solicitada en el mensaje ${message.id}`);
 
   const outputChannel = await guild.channels.fetch(CONFIG.outputChannelId);

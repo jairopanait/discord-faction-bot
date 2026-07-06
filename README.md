@@ -2,8 +2,8 @@
 
 Cuando aparecen menciones nuevas en el canal configurado, el bot procesa a todos los usuarios mencionados:
 
-1. Quita todos sus roles editables, salvo el rol conservado.
-2. Añade los dos roles configurados.
+1. Reemplaza todos sus roles normales por el rol conservado y los dos roles configurados.
+2. Discord conserva además `@everyone` y los roles administrados por integraciones, que ningún bot puede retirar.
 3. Elimina su apodo del servidor.
 4. Publica la plantilla en el canal de salida.
 5. Reacciona con ✅ si termina o con ❌ si encuentra un error.
